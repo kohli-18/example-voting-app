@@ -1,54 +1,37 @@
 pipeline {
-  agent {
-    node {
-      label 'ubuntu-1604-aufs-stable'
-    }
-  }
+  agent any
   stages {
-    stage('Build result') {
-      steps {
-        sh 'docker build -t dockersamples/result ./result'
-      }
-    } 
     stage('Build vote') {
       steps {
-        sh 'docker build -t dockersamples/vote ./vote'
-      }
-    }
+					sh 'mkdir vote'
+					sh 'cd vote'
+				  sh 'docker build -t 925528255726.dkr.ecr.ap-south-1.amazonaws.com/cloud_repo:v1_vote_1.0.0 .'
+					sh 'docker push 925528255726.dkr.ecr.ap-south-1.amazonaws.com/cloud_repo:v1_vote_1.0.0'
+						}
+					}
+    
+    stage('Build result') {
+      steps {
+					sh 'mkdir result'
+					sh 'cd ../result'
+				  sh 'docker build -t 925528255726.dkr.ecr.ap-south-1.amazonaws.com/cloud_repo:v1_result_1.0.0 .'
+					sh 'docker push 925528255726.dkr.ecr.ap-south-1.amazonaws.com/cloud_repo:v1_result_1.0.0'
+				 }
+				} 
+  
     stage('Build worker') {
       steps {
-        sh 'docker build -t dockersamples/worker ./worker'
-      }
-    }
-    stage('Push result image') {
-      when {
-        branch 'master'
-      }
-      steps {
-        withDockerRegistry(credentialsId: 'dockerbuildbot-index.docker.io', url:'') {
-          sh 'docker push dockersamples/result'
-        }
-      }
-    }
-    stage('Push vote image') {
-      when {
-        branch 'master'
-      }
-      steps {
-        withDockerRegistry(credentialsId: 'dockerbuildbot-index.docker.io', url:'') {
-          sh 'docker push dockersamples/vote'
-        }
-      }
-    }
-    stage('Push worker image') {
-      when {
-        branch 'master'
-      }
-      steps {
-        withDockerRegistry(credentialsId: 'dockerbuildbot-index.docker.io', url:'') {
-          sh 'docker push dockersamples/worker'
-        }
-      }
-    }
+						sh 'mkdir worker'
+				    sh 'cd ../worker'
+				    sh 'docker build -t 925528255726.dkr.ecr.ap-south-1.amazonaws.com/cloud_repo:v1_worker_1.0.0 .'
+						sh 'docker push 925528255726.dkr.ecr.ap-south-1.amazonaws.com/cloud_repo:v1_worker_1.0.0'
+				}
+			}
+
+	stage('deploy'){
+				steps{ sh 'docker deploy -c docker-stack.yml voting-app'
+					}
+				}
+  
   }
 }
