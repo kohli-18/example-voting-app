@@ -27,7 +27,7 @@ pipeline {
 
 	stage('deploy'){
 		steps{ 
-		     sh 'docker deploy -c docker-stack.yml voting-app'
+		     sh 'docker stack deploy -c docker-stack.yml voting-app'
 		     }
 	}
    }
