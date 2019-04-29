@@ -4,6 +4,7 @@ pipeline {
     stage('Build vote') {
           steps {
 		sh 'cd vote'
+		sh 'ls'
 		sh 'pwd'
 		sh 'ls'
 		sh 'cd vote'
