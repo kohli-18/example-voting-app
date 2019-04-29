@@ -8,6 +8,7 @@ pipeline {
 		sh 'pwd'
 		sh 'ls'
 		sh 'cd vote'
+		sh 'ls'
 		sh 'docker build -t 925528255726.dkr.ecr.ap-south-1.amazonaws.com/cloud_repo:v1_vote_1.0.0 .'
 		sh 'docker push 925528255726.dkr.ecr.ap-south-1.amazonaws.com/cloud_repo:v1_vote_1.0.0'
 		}
